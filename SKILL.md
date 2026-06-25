@@ -11,9 +11,45 @@ Boundary: do not deploy, redeploy, edit Vercel settings, sync keys, or push GitH
 
 ## Workflow
 
+Before running page 1, collect project parameters. If the user has not supplied them, ask for the missing fields first instead of starting generation.
+
+Required project parameters:
+
+- `raw_material`: source story, idea, novel fragment, or script seed.
+- `tags`: genre/content tags, for example `都市、逆袭、甜宠、悬疑`.
+- `total_episodes`: target episode count.
+- `target_script_chars`: final story text length for page 1.
+- `episode_duration`: default duration for normal episodes.
+- `first_episode_duration`: first episode duration when it should differ.
+- `hook_seconds`: desired ending-hook length.
+- `series_style`: drama style, for example `Studio Realistic`, `Cinematic Romance`, `Urban Revenge`, or `Youth Bright`.
+- `platform`: target platform, for example `抖音 / TikTok`, `快手`, `小红书`, or `YouTube Shorts`.
+- `aspect_ratio`: usually `9:16`.
+- `language`: default `中文`.
+
+If the user only provides raw material, ask a compact setup question:
+
+```markdown
+开始前我需要先定几个参数：
+
+| 参数 | 你可以这样填 |
+|---|---|
+| 题材标签 | 都市、逆袭、情感 |
+| 集数 | 4 |
+| 最终剧本字数 | 900 |
+| 单集时长 | 第 1 集 120 秒，其余 75 秒 |
+| 结尾钩子 | 5 秒 |
+| 剧集风格 | Studio Realistic / Cinematic Romance / Urban Revenge / Youth Bright |
+| 平台与画幅 | 抖音 / TikTok，9:16 |
+
+你可以直接回一行：`都市、逆袭；4集；900字；首集120秒其余75秒；钩子5秒；Urban Revenge；抖音9:16`
+```
+
+Use reasonable defaults only after the user explicitly says to use defaults.
+
 Run these pages in order:
 
-1. `script`: turn raw material into a 700-1100 character Chinese short-drama story.
+1. `script`: turn raw material into a Chinese short-drama story with the requested `target_script_chars`.
 2. `episodes`: split the story into structured episode scripts.
 3. `characters`: extract character bible, motives, conflict, appearance, voice, and image prompts.
 4. `assets`: extract visual asset groups and image prompts before storyboard work.
@@ -34,7 +70,8 @@ Common commands:
 
 ```powershell
 node C:\Users\Administrator\.codex\skills\shortdrama-stepwise-agent\scripts\shortdrama_stepwise_agent.mjs list
-node C:\Users\Administrator\.codex\skills\shortdrama-stepwise-agent\scripts\shortdrama_stepwise_agent.mjs prompt script --input .\material.txt --tags 都市,逆袭,情感
+node C:\Users\Administrator\.codex\skills\shortdrama-stepwise-agent\scripts\shortdrama_stepwise_agent.mjs questions
+node C:\Users\Administrator\.codex\skills\shortdrama-stepwise-agent\scripts\shortdrama_stepwise_agent.mjs prompt script --input .\material.txt --tags 都市,逆袭,情感 --total 4 --script-chars 900 --ep1 120 --dur 75 --hook 5 --style "Urban Revenge" --platform "抖音 / TikTok" --ratio 9:16
 node C:\Users\Administrator\.codex\skills\shortdrama-stepwise-agent\scripts\shortdrama_stepwise_agent.mjs summarize episodes --input .\episodes.json
 node C:\Users\Administrator\.codex\skills\shortdrama-stepwise-agent\scripts\shortdrama_stepwise_agent.mjs repair --input .\maybe-truncated.json
 ```
