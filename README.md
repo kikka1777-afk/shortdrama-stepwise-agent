@@ -15,6 +15,14 @@ mkdir "$env:USERPROFILE\.codex\skills" -Force
 git clone https://github.com/kikka1777-afk/shortdrama-stepwise-agent "$env:USERPROFILE\.codex\skills\shortdrama-stepwise-agent"
 ```
 
+Or clone it anywhere and run the installer:
+
+```powershell
+git clone https://github.com/kikka1777-afk/shortdrama-stepwise-agent
+cd shortdrama-stepwise-agent
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+```
+
 Then restart Codex or open a new thread and invoke:
 
 ```text
