@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shortdrama Stepwise Agent"
+  short_description: "Run a Codex-only stepwise short-drama workflow"
+  default_prompt: "Use $shortdrama-stepwise-agent inside Codex to generate a short-drama project step by step."
